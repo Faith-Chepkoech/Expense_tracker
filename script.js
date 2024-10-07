@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
-    // Function to display expenses
     const displayExpenses = (expenseArray) => {
         expenseList.innerHTML = "";
         let totalAmount = 0;
