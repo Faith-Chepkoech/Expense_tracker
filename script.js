@@ -3,9 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const expenseList = document.getElementById("expense-list");
     const totalAmountEl = document.getElementById("total-amount");
     const filterCategory = document.getElementById("filter-category");
+    const clearExpensesBtn = document.getElementById("clear-expenses");
+    const exportCsvBtn = document.getElementById("export-csv");
 
     let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
+    // Function to display expenses
     const displayExpenses = (expenseArray) => {
         expenseList.innerHTML = "";
         let totalAmount = 0;
@@ -18,7 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>$${expense.amount}</td>
                 <td>${expense.category}</td>
                 <td>${expense.date}</td>
-                <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+                <td>
+                    <button class="edit-btn" data-index="${index}">Edit</button>
+                    <button class="delete-btn" data-index="${index}">Delete</button>
+                </td>
             `;
 
             expenseList.appendChild(expenseRow);
@@ -27,11 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         totalAmountEl.textContent = totalAmount.toFixed(2);
 
-        // Save the current expenses to localStorage
+        // Save expenses to localStorage
         localStorage.setItem("expenses", JSON.stringify(expenseArray));
     };
 
-    // Add Expense Function
+    // Add Expense
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -60,6 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Clear All Expenses
+    clearExpensesBtn.addEventListener("click", () => {
+        if (confirm("Are you sure you want to clear all expenses?")) {
+            expenses = [];
+            displayExpenses(expenses);
+        }
+    });
+
     // Filter by Category
     filterCategory.addEventListener("change", (e) => {
         const selectedCategory = e.target.value;
@@ -72,6 +86,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Initialize by displaying expenses from localStorage
+    // Export Expenses to CSV
+    exportCsvBtn.addEventListener("click", () => {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Expense Name,Amount,Category,Date\n";
+
+        expenses.forEach(expense => {
+            csvContent += `${expense.name},${expense.amount},${expense.category},${expense.date}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "expenses.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+
+    // Initialize display
     displayExpenses(expenses);
 });
