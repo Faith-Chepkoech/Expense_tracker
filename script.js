@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const exportCsvBtn = document.getElementById("export-csv");
 
     let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    let editingIndex = -1; // Track if we're editing an expense
 
     // Function to display expenses
     const displayExpenses = (expenseArray) => {
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("expenses", JSON.stringify(expenseArray));
     };
 
-    // Add Expense
+    // Add or Edit Expense
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -47,7 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const date = document.getElementById("expense-date").value;
 
         if (name && amount > 0 && category && date) {
-            expenses.push({ name, amount, category, date });
+            if (editingIndex === -1) {
+                // If not editing, add a new expense
+                expenses.push({ name, amount, category, date });
+            } else {
+                // If editing, update the existing expense
+                expenses[editingIndex] = { name, amount, category, date };
+                editingIndex = -1; // Reset editing index after updating
+            }
+
             displayExpenses(expenses);
 
             // Clear form inputs after submission
@@ -63,6 +72,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const index = e.target.getAttribute("data-index");
             expenses.splice(index, 1);
             displayExpenses(expenses);
+        }
+    });
+
+    // Edit Expense
+    expenseList.addEventListener("click", (e) => {
+        if (e.target.classList.contains("edit-btn")) {
+            const index = e.target.getAttribute("data-index");
+            const expense = expenses[index];
+
+            // Populate form with the selected expense's data
+            document.getElementById("expense-name").value = expense.name;
+            document.getElementById("expense-amount").value = expense.amount;
+            document.getElementById("expense-category").value = expense.category;
+            document.getElementById("expense-date").value = expense.date;
+
+            // Set editing index to the current expense
+            editingIndex = index;
         }
     });
 
