@@ -1,10 +1,11 @@
-/* style.css */
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #70d4f3;
+    background-color: #e0f7fa; /* Softer blue */
     margin: 0;
     padding: 0;
-    
+    line-height: 1.6;
+    color: #333;
 }
 
 .container {
@@ -12,25 +13,32 @@ body {
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow */
+    border-radius: 10px; /* Rounded corners */
+    transition: all 0.3s ease-in-out;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: #007bff; /* Bright blue */
 }
 
+/* Form Styles */
 form {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 form input, form select, form button {
-    padding: 10px;
+    flex: 1;
+    padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 1rem;
 }
 
 form button {
@@ -38,44 +46,115 @@ form button {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 form button:hover {
     background-color: #218838;
 }
 
+form input::placeholder {
+    color: #aaa; /* Lighter placeholder */
+}
+
+form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Table Styles */
 .expense-table table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .expense-table th, .expense-table td {
-    padding: 10px;
+    padding: 0.75rem;
     border: 1px solid #ddd;
     text-align: left;
 }
 
 .expense-table th {
-    background-color: #f8f8f8;
+    background-color: #f1f1f1; /* Softer header background */
+    color: #555;
+    font-weight: bold;
+}
+
+.expense-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternating row colors */
+}
+
+.expense-table tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
 }
 
 .total-amount {
     text-align: right;
-    font-size: 18px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #4ac466;
 }
 
+/* Filter Section */
 .filter {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
     text-align: right;
 }
 
 .filter label {
-    margin-right: 10px;
+    margin-right: 0.75rem;
+    font-weight: bold;
 }
 
 .filter select {
-    padding: 10px;
+    padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+/* Button Animations */
+form button, .expense-table button {
+    transition: all 0.3s ease;
+}
+
+form button:active, .expense-table button:active {
+    transform: scale(0.98); /* Subtle button press effect */
+}
+
+.expense-table button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.expense-table button:hover {
+    background-color: #0056b3;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    form input, form select, form button {
+        width: 100%;
+    }
+
+    .expense-table th, .expense-table td {
+        padding: 0.5rem;
+    }
+
+    .total-amount {
+        font-size: 1rem;
+    }
 }
